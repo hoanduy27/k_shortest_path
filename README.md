@@ -5,7 +5,7 @@
 - config.yaml: Config for crawler
 - viz_config.yaml: Config for visualization
 
-I've prepared the [TEMPLATE egs](egs/mock) for demonstration how to write a config.
+We've prepared the [TEMPLATE egs](egs/TEMPLATE) for demonstration how to write a config.
 
 
 ### Output files
