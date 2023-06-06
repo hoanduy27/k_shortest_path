@@ -7,7 +7,7 @@ def json2graph_mock(data_path, out_graph_path):
 
 def json2graph(data_path, out_graph_path):
     G = nx.Graph()
-    # TODO (Khoan):
+    # TODO (Khoan): Parse map data in data_path (JSON) to nx.Graph and write to `out_graph_path`
 
     nx.write_gml(G, out_graph_path)
 

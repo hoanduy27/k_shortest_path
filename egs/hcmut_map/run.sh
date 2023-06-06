@@ -10,13 +10,23 @@ log() {
 
 stage=1
 stop_stage=10000
-egs=mock
-skip_done=false
-mock=true
+skip_done=true
+mock=false
 
-. parse_options.sh
+help_message=$(cat << EOF
+Usage: $0 [OPTIONS]
+Options:
+    --stage          # Processes starts from the specified stage (default="${stage}").
+    --stop_stage     # Processes is stopped at the specified stage (default="${stop_stage}").
+    --skip_done      # Skip running the stage that has been done (default=${skip_done})
+    --mock           # Whether to use mock data from <stage> to <stop_stage-1> (default=${mock})
+EOF
+)
 
-egs_dir=egs/${egs}
+. local/parse_options.sh
+
+egs_dir=$(pwd)
+cd ../..
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     echo "Stage 1: Crawl data"

@@ -9,6 +9,17 @@ from .mock_data import *
 load_dotenv()
 
 class BaseCrawler:
+    """
+    A Base Crawler class
+
+    Args:
+        center_longtitude: The longtitude of the center point
+        center_latitude: The latitude of the center point
+        radius: The radius from the center point to get other points
+        num_points: Number of points to make a map (including center point)
+        result_file: path to json file to write the map data
+        seed: random seed
+    """
     def __init__(
             self, 
             center_longtitude: float,
@@ -69,7 +80,7 @@ class Crawler(BaseCrawler):
         # TODO: add your custom parameters if needed (you can modify __init__ params)
 
     def crawl(self) -> dict:
-        # TODO (Phong, Minh)
+        # TODO (Phong, Minh): Crawl and store map data (JSON) to `self.result_file`
         return {}
 
 def main():

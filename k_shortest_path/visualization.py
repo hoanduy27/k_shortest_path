@@ -5,6 +5,15 @@ import networkx as nx
 from typing import List
 from k_shortest_path import Solver
 class Visualization:
+    """
+    Visualization
+    
+    Args
+        G: the nx.Graph graph
+        k: Number of shortest paths
+        pairs: List of tuple of (source, dest) to compute shortest path
+        vis_root_dir: Root directory to store the visualization result
+    """
     def __init__(
             self, 
             G: nx.Graph, 
@@ -26,7 +35,8 @@ class Visualization:
 
             shortest_paths = self.solver(source, dest) 
             print(shortest_paths)
-            # TODO (Binh):
+            # TODO (Binh): Visualize and store result to `vis_dir`, 
+            # format `vis_dir`/`k`.pdf, where `k` is the k-th shortest path
 
     @classmethod
     def from_config(cls, graph_path, config_path):

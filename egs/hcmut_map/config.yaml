@@ -1,6 +1,0 @@
-seed: 7
-center_longtitude:
-center_lattitude: 
-# radius (in kilometers) around the source to crawl
-radius: 2
-num_points: 20
