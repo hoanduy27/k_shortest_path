@@ -3,6 +3,8 @@ import argparse
 import yaml
 import networkx as nx
 from typing import List
+import matplotlib.pyplot as plt
+from mock_data import mock_graph
 from k_shortest_path import Solver
 class Visualization:
     """
@@ -31,11 +33,33 @@ class Visualization:
         for pair in self.pairs:
             source, dest = pair
             vis_name = f'{source}--{dest}'
-            vis_dir = os.path.join(self.vis_root_dir, vis_name)
-
-            shortest_paths = self.solver(source, dest) 
-            print(shortest_paths)
-            # TODO (Binh): Visualize and store result to `vis_dir`, 
+            # vis_dir = os.path.join(self.vis_root_dir, vis_name)
+            vis_dir = self.vis_root_dir
+            shortest_paths = self.solver(source, dest)
+            for idx in range(len(shortest_paths)):
+                shortest_path=shortest_paths[idx]
+                pos = nx.spring_layout(self.G)
+                node_colors = {}
+                labels = {}
+                for node in self.G.nodes():
+                    if node == source:
+                        node_colors[node] = 'g'
+                        labels[node]= str(node)+'\n(source)'
+                    elif node == dest:
+                        node_colors[node] = 'y'
+                        labels[node]= str(node)+'\n(dest)'
+                    else:
+                        node_colors[node] = 'b'
+                        labels[node]= node
+                nx.draw(self.G, pos, with_labels=True, node_color=list(node_colors.values()), labels = labels)
+                edge_labels = {(shortest_path[i], shortest_path[i+1]): i+1 for i in range(len(shortest_path)-1)}
+                edgelist = [(shortest_path[i], shortest_path[i+1]) for i in range(len(shortest_path)-1)]
+                nx.draw_networkx_edges(self.G, pos, edgelist=edgelist, edge_color='r', width=2.0)
+                nx.draw_networkx_edge_labels(self.G, pos, edge_labels=edge_labels, font_color='black')
+                
+                plt.savefig(f'{vis_dir}/{vis_name}--{idx}.pdf')
+                plt.clf()
+            
             # format `vis_dir`/`k`.pdf, where `k` is the k-th shortest path
 
     @classmethod
@@ -69,4 +93,11 @@ def main():
     viz.visualize()
 
 if __name__ == "__main__":
-    main()
+   main()
+    # v  = Visualization(
+    #     mock_graph(),
+    #     2,
+    #     [[2,3]],
+    #     '/home/binhpham2/master_lectuters/co so toan/k_shortest_path/results'
+    # )
+    # v.visualize()
