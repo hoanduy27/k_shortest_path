@@ -5,6 +5,7 @@ from typing import Dict
 import json
 from dotenv import load_dotenv
 from .mock_data import *
+import osmnx as ox
 
 load_dotenv()
 
@@ -80,8 +81,30 @@ class Crawler(BaseCrawler):
         # TODO: add your custom parameters if needed (you can modify __init__ params)
 
     def crawl(self) -> dict:
-        # TODO (Phong, Minh): Crawl and store map data (JSON) to `self.result_file`
-        return {}
+        geometries = ox.geometries_from_point(
+            (self.center_lattitude, self.center_longtitude),
+            {'building': True},
+            dist=self.radius,
+        )
+        way = geometries[geometries['addr:street'].notnull()][['addr:street', 'geometry', 'nodes']]
+        map_data = {}
+        for w in way.values:
+            for indx, node in enumerate(w[2]):
+                if node not in map_data:
+                    xx, yy = w[1].exterior.coords.xy
+                    reachable_to = set(w[2])
+                    reachable_to.remove(node)
+                    map_data[node] = {
+                        "longtitude": xx[indx],
+                        "lattitude": yy[indx],
+                        "street": w[0],
+                        "reachable_to": list(reachable_to)
+                    }
+                else:
+                    reachable_to_set = set(w[2] + map_data[node]['reachable_to'])
+                    reachable_to_set.remove(node)
+                    map_data[node]['reachable_to'] = list(reachable_to_set)
+        return map_data
 
 def main():
     parser = argparse.ArgumentParser()
