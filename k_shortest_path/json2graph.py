@@ -11,20 +11,20 @@ def json2graph_mock(data_path, out_graph_path):
 def json2graph(data_path, out_graph_path):
     G = nx.Graph()
     # TODO (Khoan): Parse map data in data_path (JSON) to nx.Graph and write to `out_graph_path`
-    mock_map_data = json.load(open(data_path), 'r')
+    map_data = json.load(open(data_path), 'r')
     
     # add all nodes in graph
-    for node in list(mock_map_data.keys()):
+    for node in list(map_data.keys()):
         G.add_node(node)
     
     visited_edge = []
-    for loc, info in mock_map_data.items():
+    for loc, info in map_data.items():
         for des in info['reachable_to']:
             if str(loc + des) not in visited_edge:
                 weight_edge = dist(info['longtitude'], 
                                 info['lattitude'], 
-                                mock_map_data[des]['longtitude'],
-                                mock_map_data[des]['lattitude'])
+                                map_data[des]['longtitude'],
+                                map_data[des]['lattitude'])
                 
                 G.add_edge(loc, des, weight=weight_edge)
                 visited_edge.append(str(loc + des))
